@@ -14,3 +14,12 @@ func TestLoadJSON(t *testing.T) {
 	fmt.Printf("Loaded %d stations\n : ", len(stations))
 	fmt.Println("Observations : ", len(stations[0].Observations))
 }
+
+func TestLoadXML(t *testing.T) {
+	stations, err := LoadFromXML("weather_data.xml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Printf("Loaded %d stations\n : ", len(stations))
+	fmt.Println("Observations : ", len(stations[0].Observations))
+}
