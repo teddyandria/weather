@@ -1,7 +1,5 @@
 # weather
 
-produire un module Go capable de lire les deux formats et de fournir une vue unifiée des données à un appelant. C'est exactement le genre de travail que vous ferez en production le jour où vous devrez migrer un format vers un autre, ou consolider des sources hétérogènes (spoiler, ça arrive tout le temps).
-
 | Donnée               | Comment c'est représenté en JSON ? | Comment c'est représenté en XML ?                                          |
 |:---------------------|:-----------------------------------|:---------------------------------------------------------------------------|
 | Pays                 | Champ `"country"` avec le nom complet (ex : `"France"`) | Attribut `country` avec le code ISO 2 lettres (ex : `country="FR"`)        |
