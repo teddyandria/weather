@@ -2,7 +2,6 @@ package weather
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 )
 
@@ -39,11 +38,41 @@ type jsonObservations struct {
 	Time        string   `json:"timestamp"`
 }
 
+type jsonRoot struct {
+	Stations []jsonStation `json:"stations"`
+}
+
+var countryISO = map[string]string{
+	"France":    "FR",
+	"Allemagne": "DE",
+	"Espagne":   "ES",
+	"Italie":    "IT",
+	"Portugal":  "PT",
+	"Belgique":  "BE",
+	"Suisse":    "CH",
+	"Autriche":  "AT",
+	"Pays-Bas":  "NL",
+	"Norvège":   "NO",
+	"Suède":     "SE",
+	"Danemark":  "DK",
+	"Pologne":   "PL",
+	"Tchèque":   "CZ",
+}
+
 // func de conversion valeur country du JSON "France" en "FR" -> iso 2 lettres
 func (s jsonStation) convert() (st Station) {
-	fmt.Println()
+	//convertir les coordonnées pour les stocker dans le model interne Station
+	st.Coordinates = Coordinates{
+		Latitude:  s.Location.Latitude,
+		Longitude: s.Location.Longitude,
+		Altitude:  s.Altitude,
+	}
+
+	//pays
+	st.Country = countryISO[s.Country]
 	return
 }
+
 func LoadFromJSON(path string) ([]Station, error) {
 	//lire un fichier avec os.ReadFile
 	data, err := os.ReadFile(path)
@@ -51,19 +80,19 @@ func LoadFromJSON(path string) ([]Station, error) {
 	if err != nil {
 		return nil, err
 	}
-	//décoder le json dans []jsonStation avec json.Unmarshal
-	var stations []jsonStation
-	err = json.Unmarshal(data, &stations)
+	//décoder le json en utilisant json.Unmarshal via une struct intermédiaire jsonRoot
+	var root jsonRoot
+	err = json.Unmarshal(data, &root)
 
 	if err != nil {
 		return nil, err
 	}
 
-	//convertir []jsonStation en []Station
+	//convertir les jsonStation en Station
 	var result []Station
-	for i, s := range stations {
-		// Conversion logique ici si nécessaire
-		result[i] = s.convert()
+	for _, s := range root.Stations {
+
+		result = append(result, s.convert())
 	}
 	return result, nil
 }
