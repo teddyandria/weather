@@ -19,8 +19,6 @@ func main() {
 		return
 	}
 
-	// Comparaison JSON vs XML
-	fmt.Println("Stations JSON: %d | Stations XML: %d\n", len(jsonStations), len(xmlStations))
 	jsonObs := 0
 	for _, s := range jsonStations {
 		jsonObs += len(s.Observations)
@@ -29,16 +27,23 @@ func main() {
 	for _, s := range xmlStations {
 		xmlObs += len(s.Observations)
 	}
-	fmt.Println("Observations JSON: %d | Observations XML: %d\n", jsonObs, xmlObs)
 
-	// Station la plus ventée
+	fmt.Printf("JSON : %d stations, %d observations\n", len(jsonStations), jsonObs)
+	fmt.Printf("XML  : %d stations, %d observations\n", len(xmlStations), xmlObs)
+
+	coherence := "OK"
+	if len(jsonStations) != len(xmlStations) || jsonObs != xmlObs {
+		coherence = "KO"
+	}
+	fmt.Printf("Cohérence : %s\n", coherence)
+
 	station, gust := weather.MaxWindGust(jsonStations)
-	fmt.Println("Station la plus ventée: %s (%.1f km/h)\n", station.ID, gust)
+	fmt.Printf("Station la plus ventée : %s (%.1f km/h)\n", station.ID, gust)
 
-	// Température moyenne de Bordeaux
 	for _, s := range jsonStations {
 		if s.ID == "FR-BOR-001" {
-			fmt.Printf("Température moyenne Bordeaux Mérignac: %.2f °C\n", weather.AvgTemperature(s))
+			fmt.Printf("Temp. moyenne Bordeaux Mérignac : %.1f °C\n", weather.AvgTemperature(s))
+			break
 		}
 	}
 }
