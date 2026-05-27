@@ -11,7 +11,7 @@ func TestLoadJSON(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Printf("Loaded %d stations\n : ", len(stations))
+	fmt.Println("Loaded stations : \n", len(stations))
 	fmt.Println("Observations : ", len(stations[0].Observations))
 }
 
@@ -20,6 +20,6 @@ func TestLoadXML(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Printf("Loaded %d stations\n : ", len(stations))
+	fmt.Println("Loaded stations : \n", len(stations))
 	fmt.Println("Observations : ", len(stations[0].Observations))
 }

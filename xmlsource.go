@@ -48,13 +48,13 @@ type xmlWind struct {
 	Direction string `xml:"direction,attr"`
 }
 
-func (s xmlStation) convert() Station {
+func (s xmlStation) convert() (st Station) {
 	installedOn, err := time.Parse("2006-01-02", s.Device.Since)
 	if err != nil {
 		installedOn = time.Time{}
 	}
 
-	st := Station{
+	st = Station{
 		Country: s.Country,
 		Coordinates: Coordinates{
 			Latitude:  s.Coordinates.Lat,
