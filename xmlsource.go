@@ -13,6 +13,7 @@ type xmlDataset struct {
 }
 
 type xmlStation struct {
+	ID           string           `xml:"id,attr"`
 	Country      string           `xml:"country,attr"`
 	Coordinates  xmlCoordinates   `xml:"coordinates"`
 	Device       xmlDevice        `xml:"device"`
@@ -56,6 +57,7 @@ func (s xmlStation) convert() (st Station) {
 	}
 
 	st = Station{
+		ID:      s.ID,
 		Country: s.Country,
 		Coordinates: Coordinates{
 			Latitude:  s.Coordinates.Lat,

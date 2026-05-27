@@ -4,6 +4,7 @@ package weather
 import "time"
 
 type Station struct {
+	ID           string
 	Country      string
 	Coordinates  Coordinates
 	Observations []Observations

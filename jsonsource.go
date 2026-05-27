@@ -8,6 +8,7 @@ import (
 )
 
 type jsonStation struct {
+	ID           string             `json:"id"`
 	Country      string             `json:"country"`
 	Altitude     int                `json:"altitude_m"`
 	Location     jsonCoordinates    `json:"location"`
@@ -65,6 +66,8 @@ var countryISO = map[string]string{
 
 // func de conversion valeur country du JSON "France" en "FR" -> iso 2 lettres
 func (s jsonStation) convert() (st Station) {
+	st.ID = s.ID
+
 	//convertir les coordonnées pour les stocker dans le model interne Station
 	st.Coordinates = Coordinates{
 		Latitude:  s.Location.Latitude,
