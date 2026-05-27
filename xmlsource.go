@@ -1,3 +1,4 @@
+// Lecture et conversion des données météo depuis un fichier XML vers le modèle interne.
 package weather
 
 import (

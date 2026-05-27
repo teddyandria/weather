@@ -1,3 +1,4 @@
+// Tests de validation des parsers JSON et XML.
 package weather
 
 import (

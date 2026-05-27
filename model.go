@@ -1,3 +1,4 @@
+// Définit le modèle interne unifié, indépendant de tout format source.
 package weather
 
 import "time"
