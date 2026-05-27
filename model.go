@@ -21,7 +21,7 @@ type Wind struct {
 }
 
 type Device struct {
-	Model         string
+	Manufacturer  string
 	Type          string
 	DateInstalled time.Time
 }

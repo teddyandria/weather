@@ -3,6 +3,7 @@ package weather
 import (
 	"encoding/json"
 	"os"
+	"time"
 )
 
 type jsonStation struct {
@@ -24,18 +25,20 @@ type jsonWind struct {
 }
 
 type jsonDevice struct {
-	Manufacturer  string `json:"manufacturer"`
-	Type          string `json:"type"`
+	Manufacturer string `json:"manufacturer"`
+	Type         string `json:"type"`
+	//dateInstalled est en string car dans le json, c'est sous format "2020-01-02" et pas un timestamp.
+	// encoding/json ne sait pas parser ça en time.Time directement.
 	DateInstalled string `json:"installed_on"`
 }
 
 type jsonObservations struct {
 	//Celsius
-	Temperature float64  `json:"temperature_celsius"`
-	Sky         string   `json:"conditions"`
-	Wind        jsonWind `json:"wind"`
-	Notes       *string  `json:"notes"`
-	Time        string   `json:"timestamp"`
+	Temperature float64   `json:"temperature_celsius"`
+	Sky         string    `json:"conditions"`
+	Wind        jsonWind  `json:"wind"`
+	Notes       *string   `json:"notes"`
+	Time        time.Time `json:"timestamp"`
 }
 
 type jsonRoot struct {
@@ -70,6 +73,34 @@ func (s jsonStation) convert() (st Station) {
 
 	//pays
 	st.Country = countryISO[s.Country]
+
+	//device
+	//parsing de la date d'installation du device, qui est au format "2020-01-02" dans le JSON, en time.Time
+	installedOn, err := time.Parse("2006-01-02", s.Device.DateInstalled)
+	if err != nil {
+		installedOn = time.Time{} // valeur par défaut si le parsing échoue
+	}
+
+	st.Device = Device{
+		Manufacturer:  s.Device.Manufacturer,
+		Type:          s.Device.Type,
+		DateInstalled: installedOn,
+	}
+
+	//observations
+	for _, o := range s.Observations {
+		st.Observations = append(st.Observations, Observations{
+			Temperature: o.Temperature,
+			Sky:         o.Sky,
+			Wind: Wind{
+				Speed:     o.Wind.Speed,
+				Direction: o.Wind.Direction,
+			},
+			Notes: o.Notes,
+			Time:  o.Time,
+		})
+	}
+
 	return
 }
 

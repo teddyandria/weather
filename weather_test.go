@@ -11,6 +11,6 @@ func TestLoadJSON(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Printf("Loaded %d stations\n", len(stations))
-	fmt.Println("First station:", stations[0])
+	fmt.Printf("Loaded %d stations\n : ", len(stations))
+	fmt.Println("Observations : ", len(stations[0].Observations))
 }
